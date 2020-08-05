@@ -1,4 +1,5 @@
 import requests
+from requests.auth import HTTPBasicAuth
 import configparser
 
 config = configparser.ConfigParser()
@@ -13,7 +14,7 @@ def action_handler(action, parameters, return_var):
 
     if action == 'efetuaReserva':
         return_values = efetuaReserva(parameters, return_var)
-    
+
     return {
             'skills': {
                 'main skill': {
@@ -29,7 +30,7 @@ def consultaDisponibilidade(pars,return_var):
     pars_get = '&datain='+datain+'&dataout='+dataout
     url_final = base_url+servico+pars_get
 
-    response = requests.get(url_final)
+    response = requests.get(url_final,auth=HTTPBasicAuth('m317510','123456'))
     if (response.status_code == 200):
         print(response.text)
         return ({return_var: response.text})
@@ -45,10 +46,10 @@ def efetuaReserva(pars,return_var):
     pars_get = '&datain='+datain+'&dataout='+dataout+'&confirmacao='+confirmacao
     url_final = base_url+servico+pars_get
 
-    response = requests.get(url_final)
+    response = requests.get(url_final,auth=HTTPBasicAuth('m317510','123456'))
     if (response.status_code == 200):
         print(response.text)
         return ({return_var: response.text})
     else:
         print("Erro de requisicao!\n")
-        return ({return_var: 'Nao consegui reservar as datas!\n'})    
+        return ({return_var: 'Nao consegui reservar as datas!\n'})
